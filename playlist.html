@@ -14,40 +14,37 @@
 
     var playlistCollection;
 
-    var rawsongs = [
-     ["Spoon - I Turn My Camera On", 
-        "https://www.youtube.com/watch?v=ro95Ns58qSE"],
-     ["Los Mono - Promesas", 
-        "https://www.youtube.com/watch?v=OBSkLfVp2fQ"]
-    ];
-
-    function append_song(sid, song) {
+    function append_song(idx, key, song) {
         $("#playlist").append(
-            "<div id='song_" + song + "' class='songbox'>" +
+            "<div id='song_" + idx + "' class='songbox'>" +
                 "<h2>" +
-                  "<a href='" + s[1] + "' target='_blank'>" + 
-                    s[0] + "</a>" +
+                  "<a href='" + song.url + "' target='_blank'>" + 
+                    song.title + "</a>" +
                 "</h2>" +
                 "<div>" +
-                "<a id='song_" + song + "_up' href='#' " + 
-                    "onclick='return upvote(" + song + ");'>^</a>" +
-                "<span>" + s[3] + "</span>" + 
-                "<a id='song_" + song + "_down' href='#' " +
-                    "onclick='return downvote(" + song + ");'>v</a>" + 
-                "</div>"+
+                "<a id='song_" + idx + "_up' href='#' " + 
+                    "onclick='return upvote(" + idx + ");'>^</a>" +
+                "<span>" + "n/a" + "</span>" + 
+                "<a id='song_" + idx + "_down' href='#' " +
+                    "onclick='return downvote(" + idx + ");'>v</a>" + 
+                "</div>" +
             "</div>");
     }
 
     function render_playlist() {
+        alert("Getting playlist");
         playlistCollection.get(function(err, data, keys) {
-         if (err) {
-            s[2] = 0; // Vote? 0 = No, 1 = Up, 2 = Down
-            s[3] = "?"; // Others vote total
-         } else {
-             for (song in rawsongs) {
-                append_song(song
-             }
-         }
+            if (err) {
+                console.log("Could not get collection");
+            } else {
+                 alert("Got playlist");
+                 for (idx in data) {
+                    key = key[idx];
+                    song = data[idx];
+                    append_song(idx, key, song);
+                 }
+            }
+        });
     }
 
     function get_song(sid) {
