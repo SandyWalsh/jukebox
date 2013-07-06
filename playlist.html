@@ -17,7 +17,7 @@
     var user_key;
 
     function get_vote_key(song_key) {
-        return song_key.name + "/" + this_user.id + "/vote";
+        return song_key.name + "/votes/" + this_user.id;
     }
 
     function append_song(idx, key, song) {
