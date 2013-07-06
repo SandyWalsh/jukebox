@@ -42,6 +42,10 @@ body {
   font-family: sans-serif;
   background-color: #eee;
 }
+body,
+html {
+  height: 100%;
+}
 .icon {
   display: inline-block;
   margin-right: 3px;
@@ -154,6 +158,9 @@ body {
   float: left;
   width: 75%;
   font-weight: 100;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 #playlist > li > aside {
   float: right;
