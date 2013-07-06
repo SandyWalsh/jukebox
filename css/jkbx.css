@@ -119,6 +119,9 @@ html {
   padding-top: .5em;
   max-width: 86%;
 }
+#playlist-wrapper {
+  padding-bottom: 6em;
+}
 #playlist-wrapper section {
   background-color: #fff;
   position: relative;
