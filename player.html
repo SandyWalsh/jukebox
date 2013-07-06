@@ -88,6 +88,7 @@
         function onPlayerError(errorCode) {
             console.log("An error occured of type:" + errorCode);
             //Most likely a copyright issue, so move onto the next song.
+            playing = false;
             play_firstsong();
         }
 
