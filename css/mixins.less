@@ -1,0 +1,56 @@
+.boxsizing (@sizing: border-box) {
+	-webkit-box-sizing: @sizing; 
+	   -moz-box-sizing: @sizing;
+	        box-sizing: @sizing;
+}
+
+.transition(@args: .05s) {
+	-webkit-transition: @args;
+	   -moz-transition: @args;
+	     -o-transition: @args;
+	        transition: @args;   
+}
+
+.rounded (@args: 2px) {
+  -webkit-border-radius: @args;
+     -moz-border-radius: @args;
+          border-radius: @args;
+}
+
+.gradient(@start: #888, @stop: #444) {
+	background-image: -moz-linear-gradient(top, @start 0%, @stop 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@start), color-stop(100%, @stop));
+	background-image: -webkit-linear-gradient(top,  @start 0%, @stop, 100%);
+	background-image: -o-linear-gradient(top,  @start 0%, @stop, 100%);
+	background-image: -ms-linear-gradient(top,  @start 0%, @stop, 100%);
+	background-image: linear-gradient(top, @start 0%, @stop, 100%);
+}
+
+.text-shadow(@args: 0 1px 1px rgba(0,0,0,.65)) {
+	-webkit-text-shadow: @args;
+	-moz-text-shadow: @args;
+	text-shadow: @args;
+}
+
+.box-shadow(@args: 0 2px 2px fadeout(black, 75%)) {
+	-webkit-box-shadow: @args;
+	-moz-box-shadow: @args;
+	box-shadow: @args;
+}
+
+.clearfix {
+  zoom: 1;
+	&:after {
+    display: block;
+    visibility: hidden;
+    height: 0;
+    clear: both;
+    content: ".";
+	}
+}
+
+.text-ellipsis {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

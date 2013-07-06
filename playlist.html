@@ -1,13 +1,9 @@
+<!DOCTYPE html>
 <html>
  <head>
   <title>Jkbx Playlist</title>
 
-  <style type="text/css">
-    songbox
-    {
-        border: solid 1px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="css/jkbx.css"/>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
   <script src="https://cdn.goinstant.net/client/platform.min.js"></script>
   <script type="text/javascript">
@@ -24,10 +20,10 @@
      ];
 
      for (song in rawsongs) {
-        $("#playlist").append("<div class='songbox'>" +
+        $("#playlist").append('<li class="songbox">' +
             "<h2>" + rawsongs[song][0] + "</h2>" +
-            "<div><a>^</a> <span>###</span> <a>v</a> <span>###</span></div>"+
-            "</div>");
+            '<aside class="song-controller"><div><a href="#" class="upvote">^</a><span class="vote-count">123</span><a href="#" class="downvote">v</a></div></aside>' +
+            "</li>");
      }
 
      goinstant.connect(url, function(err, platform, session) {
@@ -52,7 +48,22 @@
   </script>
  </head>
  <body>
-    <div id='playlist'>
+    <div class="container" id="now-playing-wrapper">
+      <section id="now-playing">
+        <img src="http://placebox.es/175/98/f0f0f0" alt="Video Thumbnail">
+        <div>
+          <p>Now Playing</p>
+          <h2>Now Playing Video Title</h2>
+        </div>
+      </section>
+      <section id="vote-time">
+        <div></div>
+      </section>
+    </div>
+    <div class="container" id="playlist-wrapper">
+      <section>
+        <ol id="playlist"></ol>
+      </section>
     </div>
  </body>
 </html>
