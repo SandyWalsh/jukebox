@@ -16,6 +16,10 @@
     var this_user;
     var user_key;
 
+    function get_vote_key(song_key) {
+        return song_key.name + "/" + this_user.id + "/vote";
+    }
+
     function append_song(idx, key, song) {
         $("#playlist").append(
             "<li id='song_" + idx + "' class='songbox'>" +
@@ -35,8 +39,21 @@
             "</li>");
     }
 
+    function update_internal_vote(idx) {
+        function _inner_update(err, value, context) {
+            if (!err) {
+                console.log("Got vote update for", idx, "=", value);
+                if (value != null) {
+                    playlist[idx][3] = value;
+                }
+            }
+        }
+        return _inner_update;
+    }
+
     function render_playlist() {
         console.log("Getting playlist");
+        $("#playlist").empty();
         playlistCollection.get(function(err, data, keys) {
             if (err) {
                 console.log("Could not get collection");
@@ -45,8 +62,13 @@
                  playlist = new Array();
                  for (idx in data) {
                     key = keys[idx];
+                    console.log(idx, key.name);
                     song = data[idx];
                     append_song(idx, key, song);
+
+                    var vote_key_name = get_vote_key(key);
+                    var vote_key = this_session.key(vote_key_name);
+                    vote_key.get(update_internal_vote(idx));
                     playlist.push([idx, key, song, 0, 0]); // add vote and count
                  }
             }
@@ -65,8 +87,8 @@
     function set_vote(idx, vote) {
         var song = get_song(idx);
         song[3] = vote;
-        var vote_key = song[1].name + "/" + this_user.id + "/vote";
-        console.log("vote_key=" + vote_key);
+        var vote_key = get_vote_key(song[1]);
+        console.log("vote_key=" + vote_key, vote);
         var key = this_session.key(vote_key);
         key.set(vote, function(err) {
           if (err) {
@@ -80,7 +102,7 @@
             alert("You already voted!");
             return false;
         }
-        alert("Upvote" + idx);
+        console.log("Upvote " + idx);
         set_vote(idx, 1);
         return false;
     }
@@ -91,11 +113,11 @@
             return false;
         }
 
-        alert("Downvote" + idx);
+        console.log("Downvote " + idx);
         set_vote(idx, -1);
         return false;
     }
-    
+
     function add_video() {
         var video_url = $("#youtube_video").val();
         var video_id = youtube_parser(video_url);
@@ -129,6 +151,13 @@
             }                
         });
     }
+
+    function bubbledListener(value, context) {
+        // Something was removed from the collection.
+        console.log("Refreshing playlist");
+        render_playlist();
+    }
+
     
     //Parse out the video id.
     function youtube_parser(url){
@@ -159,6 +188,9 @@
                }
            });
 
+           playlistCollection.on('remove', bubbledListener, 
+               function(err, command, context) {
+               });
            render_playlist();
          });
 
