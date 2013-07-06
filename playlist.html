@@ -8,40 +8,78 @@
   <script src="https://cdn.goinstant.net/client/platform.min.js"></script>
   <script type="text/javascript">
 
-    $( document ).ready(function() {
+    var playlistCollection;
 
-     var url = 'https://goinstant.net/jukebox/jukebox/123';
-
-     var rawsongs = [
+    var rawsongs = [
      ["Spoon - I Turn My Camera On", 
         "https://www.youtube.com/watch?v=ro95Ns58qSE"],
      ["Los Mono - Promesas", 
         "https://www.youtube.com/watch?v=OBSkLfVp2fQ"]
-     ];
+    ];
 
-     for (song in rawsongs) {
-        $("#playlist").append('<li class="songbox">' +
-            "<h2>" + rawsongs[song][0] + "</h2>" +
-            '<aside class="song-controller"><div><a href="#" class="upvote">^</a><span class="vote-count">123</span><a href="#" class="downvote">v</a></div></aside>' +
+    function append_song(sid, song) {
+        $("#playlist").append(
+            "<li id='song_" + song + "' class='songbox'>" +
+                "<h2>" +
+                  "<a href='" + s[1] + "' target='_blank'>" + 
+                    s[0] + "</a>" +
+                "</h2>" +
+                "<div>" +
+                "<a id='song_" + song + "_up' href='#' " + 
+                    "onclick='return upvote(" + song + ");'>^</a>" +
+                "<span>" + s[3] + "</span>" + 
+                "<a id='song_" + song + "_down' href='#' " +
+                    "onclick='return downvote(" + song + ");'>v</a>" + 
+                "</div>"+
             "</li>");
-     }
+    }
 
+    function render_playlist() {
+        playlistCollection.get(function(err, data, keys) {
+         if (err) {
+            s[2] = 0; // Vote? 0 = No, 1 = Up, 2 = Down
+            s[3] = "?"; // Others vote total
+         } else {
+             for (song in rawsongs) {
+               // append_song(song
+             }
+         }
+       });
+    }
+
+
+    function get_song(sid) {
+        return rawsongs[sid];
+    }
+
+    function get_vote(sid) {
+        var song = get_song(sid);
+        return song[2];
+    }
+
+    function upvote(sid) {
+        if (get_vote(sid) != 0)
+        alert("Upvote" + sid);
+        return false;
+    }
+
+    function downvote(sid) {
+        alert("Downvote" + sid);
+        return false;
+    }
+
+    $( document ).ready(function() {
+
+     var url = 'https://goinstant.net/jukebox/jukebox/123';
      goinstant.connect(url, function(err, platform, session) {
        if (err) {
          console.log('error connecting');
          return;
        }
 
-       var nameKey = session.key('/name');
+       playlistCollection = session.collection('/playlist');
 
-       // handle sets from remote users
-       nameKey.on('set', function(value, context) {
-       });
-
-       // set the value when we load
-       nameKey.get(function(err, value, context) {
-       });
-
+       render_playlist();
      });
 
     });
