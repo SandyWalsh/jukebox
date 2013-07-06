@@ -71,7 +71,10 @@ html {
 }
 #now-playing-wrapper #now-playing {
   padding: .5em;
-  background-color: #222;
+  background-color: #111;
+  -webkit-box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.19999999999999996);
+  -moz-box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.19999999999999996);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.19999999999999996);
   font-size: 1.7em;
   -webkit-border-radius: 3px 3px 0 0;
   -moz-border-radius: 3px 3px 0 0;
@@ -312,7 +315,7 @@ footer#submit-footer input[type="text"] {
   border: 0;
   padding: .6em;
   background: #444;
-  width: 75%;
+  width: 80.5%;
   color: #ccc;
   -webkit-transition: all 0.2s ease;
   -moz-transition: all 0.2s ease;
@@ -327,7 +330,7 @@ footer#submit-footer input[type="text"]:focus {
 footer#submit-footer button {
   -webkit-appearance: none;
   float: right;
-  width: 23%;
+  width: 18%;
   border: 0;
   padding: .5em;
   font-size: 1em;
@@ -399,6 +402,7 @@ footer#submit-footer button:active {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
+    width: 75%;
   }
   footer#submit-footer button {
     width: 20%;
