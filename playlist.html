@@ -67,9 +67,24 @@
         alert("Downvote" + sid);
         return false;
     }
+    
+    function add_video() {
+        // Add a new value - a unique key will be generated automatically
+        playlistCollection.add({title: 'Random Title', url: $("#youtube_video").val()}, function(err, key) {
+           // Check for errors
+           if (err) {
+              //oh no!
+              console.log(err);
+              return;
+           }
 
+           // key contains the newly created Key object
+           console.log(key.name);
+        });
+    }
+     
     $( document ).ready(function() {
-
+     
      var url = 'https://goinstant.net/jukebox/jukebox/123';
      goinstant.connect(url, function(err, platform, session) {
        if (err) {
@@ -79,9 +94,14 @@
 
        playlistCollection = session.collection('/playlist');
 
-       render_playlist();
-     });
-
+       render_playlist();    
+     });   
+    
+       $("#submit").click(function() {
+         console.log("Submit Button Click detected.")
+         add_video();
+       });
+     
     });
   </script>
  </head>
@@ -114,8 +134,8 @@
         </ol>
       </section>
       <section>
-        <input type="text" placeholder="Add Youtube URL"/>
-        <button type="submit">+ Add</button>
+        <input type="text" id="youtube_video" placeholder="Add Youtube URL"/>
+        <button type="submit" id="submit">+ Add</button>
       </section>
     </div>
  </body>
