@@ -5,6 +5,8 @@
     <script type="text/javascript" src="swfobject.js"></script>
     <script type="text/javascript">
         var playlistCollection;
+        var this_session;
+        var playing = false;
 
         $( document ).ready(function() {
             var url = 'https://goinstant.net/jukebox/jukebox/123';
@@ -13,10 +15,22 @@
                 console.log('error connecting');
                 return;
               }
+              
+              this_session = session;
 
               playlistCollection = session.collection('/playlist');
+              
+              playlistCollection.on('set', addListener, function(err, command, context) {
+                if (err) {
+                  console.log("Playlist collection on listener fail");
+                }
+              });
+                            
+              function addListener(key, value, context) {
+                  play_firstsong();
+              }
 
-              play_firstsong();    
+              play_firstsong();
             });  
         });
         
@@ -25,9 +39,18 @@
                 if (err) {
                     console.log("Could not get collection");
                 } else {
-                    createPlayer(data[0].vid);
-                    console.log("Key Name " + keys[0].name);
-                    keys[0].remove();
+                    if(playing == false && data.length > 0) {
+                        createPlayer(data[0].vid);
+                        console.log("Key Name " + keys[0].name);
+
+                        //Globally broadcast this is playing.
+                        var key = this_session.key('/now_playing');
+                        var value = {title: data[0].title, thumbnail: data[0].thumbnail};
+                        key.set(value);
+
+                        keys[0].remove();
+                        playing = true;
+                    }
                 }
             });
         }  
@@ -44,6 +67,7 @@
             console.log("State Changed" + newState);
 
             if(newState == "0") {
+                playing = false;
                 console.log("Song stopped, request a new one.");
                 play_firstsong();
             }
