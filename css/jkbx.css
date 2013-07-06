@@ -40,6 +40,7 @@ a {
 body {
   margin: 0;
   font-family: sans-serif;
+  background-color: #eee;
 }
 .icon {
   display: inline-block;
@@ -108,9 +109,26 @@ body {
   padding-top: .5em;
   max-width: 79%;
 }
-#playlist-wrapper {
-  background-color: #eee;
-  min-height: 500px;
+#playlist-wrapper section {
+  background-color: #fff;
+}
+#playlist-wrapper section h3 {
+  border-bottom: 1px solid #ddd;
+  margin: 0 1em 1em;
+  padding-top: 1em;
+  text-transform: uppercase;
+  color: #999;
+  font-weight: 100;
+  font-size: .85em;
+  letter-spacing: 2px;
+  text-align: center;
+}
+#playlist-wrapper section h3 span {
+  position: relative;
+  display: inline-block;
+  background-color: #fff;
+  top: .6em;
+  padding: 0 1em;
 }
 #playlist {
   list-style: none;
@@ -298,11 +316,22 @@ footer#submit-footer button {
   text-transform: uppercase;
   color: white;
   font-family: sans-serif;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 footer#submit-footer button .icon {
   font-weight: normal;
   line-height: .5;
   margin-left: 10px;
+}
+footer#submit-footer button:hover {
+  color: #19a2c5;
+}
+footer#submit-footer button:active {
+  color: #0e586a;
 }
 @media handheld, only screen and (max-width: 48em) {
   .container {
@@ -337,8 +366,22 @@ footer#submit-footer button .icon {
     font-size: .8em;
   }
   #playlist > li h2 {
-    width: 60%;
+    width: 53%;
     font-size: .9em;
     margin-top: .5em;
+  }
+  footer#submit-footer input[type="text"] {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+  }
+  footer#submit-footer button {
+    width: 20%;
+  }
+  footer#submit-footer button span {
+    display: none;
+  }
+  footer#submit-footer button i.icon {
+    margin: 0;
   }
 }

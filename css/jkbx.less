@@ -34,6 +34,7 @@ a {
 body {
 	margin: 0;
 	font-family: @fontSans;
+	background-color: #eee;
 }
 
 .icon {
@@ -58,11 +59,17 @@ body {
 
 #now-playing-wrapper {
 	background-color: #333;
+	// background: url('../css/bg.jpg') no-repeat;
+	// -webkit-background-size: cover;
+	// -moz-background-size: cover;
+	// -o-background-size: cover;
+	// background-size: cover;
 	color: white;
 	padding-top: 2em;
 	#now-playing {
 		padding: .5em;
 		background-color: #222;
+		// background-color: fadeout(white, 90%);
 		font-size: 1.7em;
 		.rounded(3px 3px 0 0);
 		.clearfix();
@@ -96,8 +103,29 @@ body {
 }
 
 #playlist-wrapper {
-	background-color: #eee;
-	min-height: 500px;
+	//min-height: 500px;
+	section {
+		background-color: #fff;
+		h3 {
+			border-bottom: 1px solid #ddd;
+			margin: 0 1em 1em;
+			padding-top: 1em;
+			text-transform: uppercase;
+			color: #999;
+			font-weight: 100;
+			font-size: .85em;
+			letter-spacing: 2px;
+			text-align: center;
+			span {
+				position: relative;
+				display: inline-block;
+				background-color: #fff;
+				top: .6em;
+				padding: 0 1em;
+
+			}
+		}
+	}
 }
 
 #playlist {
@@ -264,10 +292,18 @@ footer#submit-footer {
 		text-transform: uppercase;
 		color: white;
 		font-family: @fontSans;
+		cursor: pointer;
+		.transition();
 		.icon {
 			font-weight: normal;
 			line-height: .5;
 			margin-left: 10px;
+		}
+		&:hover {
+			color: lighten(@teal, 10%);
+		}
+		&:active {
+			color: darken(@teal, 10%);
 		}
 	}
 }
@@ -307,9 +343,23 @@ footer#submit-footer {
 				font-size: .8em;
 			}
 			h2 {
-				width: 60%;
+				width: 53%;
 				font-size: .9em;
 				margin-top: .5em;
+			}
+		}
+	}
+	footer#submit-footer {
+		input[type="text"] {
+			.rounded(0);
+		}
+		button {
+			width: 20%;
+			span {
+				display: none;
+			}
+			i.icon {
+				margin: 0;
 			}
 		}
 	}

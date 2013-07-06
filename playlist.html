@@ -5,7 +5,7 @@
 
   <link rel="stylesheet" type="text/css" href="css/jkbx.css"/>
   <meta name="viewport" content="width=device-width">
-  
+
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
   <script src="https://cdn.goinstant.net/client/platform.min.js"></script>
   <script type="text/javascript">
@@ -39,6 +39,18 @@
             "</li>");
     }
 
+    function update_internal_vote(idx) {
+        function _inner_update(err, value, context) {
+            if (!err) {
+                console.log("Got vote update for", idx, "=", value);
+                if (value != null) {
+                    playlist[idx][3] = value;
+                }
+            }
+        }
+        return _inner_update;
+    }
+
     function render_playlist() {
         console.log("Getting playlist");
         $("#playlist").empty();
@@ -54,17 +66,9 @@
                     song = data[idx];
                     append_song(idx, key, song);
 
-/*
                     var vote_key_name = get_vote_key(key);
                     var vote_key = this_session.key(vote_key_name);
-                    vote_key.get(vote, function(err) {
-                      if (err) {
-                        console.log("Could not get current vote.");
-                      } else {
-                        playlist[
-                      }
-                    });
-*/
+                    vote_key.get(update_internal_vote(idx));
                     playlist.push([idx, key, song, 0, 0]); // add vote and count
                  }
             }
@@ -84,7 +88,7 @@
         var song = get_song(idx);
         song[3] = vote;
         var vote_key = get_vote_key(song[1]);
-        console.log("vote_key=" + vote_key);
+        console.log("vote_key=" + vote_key, vote);
         var key = this_session.key(vote_key);
         key.set(vote, function(err) {
           if (err) {
@@ -98,7 +102,7 @@
             alert("You already voted!");
             return false;
         }
-        alert("Upvote" + idx);
+        console.log("Upvote " + idx);
         set_vote(idx, 1);
         return false;
     }
@@ -109,7 +113,7 @@
             return false;
         }
 
-        alert("Downvote" + idx);
+        console.log("Downvote " + idx);
         set_vote(idx, -1);
         return false;
     }
@@ -230,15 +234,15 @@
     </div>
     <div class="container" id="playlist-wrapper">
       <section>
+        <h3><span>Up Next</span></h3>
         <ol id="playlist">
-          
         </ol>
       </section>
     </div>
     <footer class="container" id="submit-footer">
       <section>
         <input type="text" id="youtube_video" placeholder="Add Youtube URL"/>
-        <button type="submit" id="submit">Add<i class="icon">&#57347;</i></button>
+        <button type="submit" id="submit"><span>Add</span><i class="icon">&#57347;</i></button>
       </section>
     </footer>
  </body>
