@@ -1,13 +1,9 @@
+<!DOCTYPE html>
 <html>
  <head>
   <title>Jkbx Playlist</title>
 
-  <style type="text/css">
-    songbox
-    {
-        border: solid 1px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="css/jkbx.css"/>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
   <script src="https://cdn.goinstant.net/client/platform.min.js"></script>
   <script type="text/javascript">
@@ -16,19 +12,21 @@
 
     function append_song(idx, key, song) {
         $("#playlist").append(
-            "<div id='song_" + idx + "' class='songbox'>" +
+            "<li id='song_" + idx + "' class='songbox'>" +
                 "<h2>" +
                   "<a href='" + song.url + "' target='_blank'>" + 
                     song.title + "</a>" +
                 "</h2>" +
-                "<div>" +
-                "<a id='song_" + idx + "_up' href='#' " + 
-                    "onclick='return upvote(" + idx + ");'>^</a>" +
-                "<span>" + "n/a" + "</span>" + 
-                "<a id='song_" + idx + "_down' href='#' " +
-                    "onclick='return downvote(" + idx + ");'>v</a>" + 
-                "</div>" +
-            "</div>");
+                "<aside>" +
+                  "<div>" +
+                    "<a id='song_" + idx + "_up' href='#' " + 
+                        "onclick='return upvote(" + idx + ");'>^</a>" +
+                    "<span>" + "n/a" + "</span>" + 
+                    "<a id='song_" + idx + "_down' href='#' " +
+                        "onclick='return downvote(" + idx + ");'>v</a>" + 
+                  "</div>" +
+                "</aside>" +
+            "</li>");
     }
 
     function render_playlist() {
@@ -68,24 +66,52 @@
     }
 
     $( document ).ready(function() {
+        var url = 'https://goinstant.net/jukebox/jukebox/123';
+        goinstant.connect(url, function(err, platform, session) {
+           if (err) {
+             console.log('error connecting');
+             return;
+           }
 
-     var url = 'https://goinstant.net/jukebox/jukebox/123';
-     goinstant.connect(url, function(err, platform, session) {
-       if (err) {
-         console.log('error connecting');
-         return;
-       }
+           playlistCollection = session.collection('/playlist');
 
-       playlistCollection = session.collection('/playlist');
-
-       render_playlist();
-     });
-
-    });
+           render_playlist();
+         });
+       });
   </script>
  </head>
  <body>
-    <div id='playlist'>
+    <div class="container" id="now-playing-wrapper">
+      <section id="now-playing">
+        <img src="http://placebox.es/175/98/f0f0f0" alt="Video Thumbnail">
+        <div>
+          <p>Now Playing</p>
+          <h2>Now Playing Video Title</h2>
+        </div>
+      </section>
+      <section id="vote-time">
+        <div></div>
+      </section>
+    </div>
+    <div class="container" id="playlist-wrapper">
+      <section>
+        <ol id="playlist">
+          <!-- <li class='songbox'>
+            <h2><a href="#">Song Name</a></h2>
+            <aside class="song-controller">
+              <div>
+                <a href='#'>^</a>
+                <span>123</span>
+                <a href='#'>v</a>
+              </div>
+            </aside>
+          </li> -->
+        </ol>
+      </section>
+      <section>
+        <input type="text" placeholder="Add Youtube URL"/>
+        <button type="submit">+ Add</button>
+      </section>
     </div>
  </body>
 </html>

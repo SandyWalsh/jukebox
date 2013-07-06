@@ -4,30 +4,30 @@
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script type="text/javascript" src="swfobject.js"></script>
     <script type="text/javascript">
-       function onLoad() {
-    
-         var url = 'https://goinstant.net/jukebox/jukebox/123';
-    
-         goinstant.connect(url, function(err, platform, session) {
-            if (err) {
-                console.log('error connecting');
-                return;
-            }
-             
-            var videoKey = session.key('/video');
-                
-            // set the value when we load
-            videoKey.get(function(err, value, context) {
-                createPlayer(value);
-            });
-             
-           // handle sets from remote users
-           videoKey.on('set', function(value, context) {
-                createPlayer(value);
-           });
-             
+        var videoKey;
+        
+        var url = 'https://goinstant.net/jukebox/jukebox/123';
+        
+        $( document ).ready(function() {
+
+            goinstant.connect(url, function(err, platform, session) {
+               if (err) {
+                   console.log('error connecting');
+                   return;
+               }
+
+               videoKey = session.key('/video');
+
+               // set the value when we load
+               updateVideo();             
          });
-       }
+        });
+         
+         function updateVideo() {
+                videoKey.get(function(err, value, context) {
+                   createPlayer(value);
+               });   
+         }
        
         // This function is called when an error is thrown by the player
         function onPlayerError(errorCode) {
@@ -37,6 +37,11 @@
         // This function is called when the player changes state
         function onPlayerStateChange(newState) {
             console.log("State Changed" + newState);
+            
+            if(newState == "0") {
+                console.log("Song stopped, request a new one.");
+                updateVideo();
+            }
         }
        
         // This function is automatically called by the player once it loads
@@ -69,7 +74,7 @@
       </script>
     
 </head>
-<body onload="onLoad();"> 
+<body> 
 </body>
 </html>
 
