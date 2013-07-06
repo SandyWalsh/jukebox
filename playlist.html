@@ -26,11 +26,11 @@
                 "</h2>" +
                 "<aside>" +
                   "<div>" +
-                    "<a id='song_" + song + "_up' href='#' " + 
-                        "onclick='return upvote(" + song + ");'>^</a>" +
+                    "<a class='upvote' id='song_" + song + "_up' href='#' " + 
+                        "onclick='return upvote(" + song + ");'>&#59231;</a>" +
                     "<span>" + s[3] + "</span>" + 
-                    "<a id='song_" + song + "_down' href='#' " +
-                        "onclick='return downvote(" + song + ");'>v</a>" + 
+                    "<a class='downvote' id='song_" + song + "_down' href='#' " +
+                        "onclick='return downvote(" + song + ");'>&#59228;</a>" + 
                   "</div>" +
                 "</aside>" +
             "</li>");
@@ -103,16 +103,7 @@
     <div class="container" id="playlist-wrapper">
       <section>
         <ol id="playlist">
-          <!-- <li class='songbox'>
-            <h2><a href="#">Song Name</a></h2>
-            <aside class="song-controller">
-              <div>
-                <a href='#'>^</a>
-                <span>123</span>
-                <a href='#'>v</a>
-              </div>
-            </aside>
-          </li> -->
+          
         </ol>
       </section>
       <section>
