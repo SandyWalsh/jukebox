@@ -143,6 +143,10 @@ html {
   padding: 1em;
   border-top: 1px solid #ddd;
   zoom: 1;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 #playlist > li:after {
   display: block;
@@ -150,6 +154,9 @@ html {
   height: 0;
   clear: both;
   content: ".";
+}
+#playlist > li:hover {
+  background-color: #f7f7f7;
 }
 #playlist > li:first-child {
   border-top: 0;
