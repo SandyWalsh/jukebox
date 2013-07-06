@@ -5,7 +5,7 @@
 
   <link rel="stylesheet" type="text/css" href="css/jkbx.css"/>
   <meta name="viewport" content="width=device-width">
-  
+
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
   <script src="https://cdn.goinstant.net/client/platform.min.js"></script>
   <script type="text/javascript">
@@ -181,7 +181,23 @@
                    user_key = key;
                }
            });
+           
+           //Handle anything for now playing
+           var now_playing_key = session.key('/now_playing');
+            
+           function now_playing_listener(value, context) {
+               console.log("Now playing has changed. Context: " + context);
+               $('#video_title').html(value.title);
+               $("#video_thumbnail").attr("src",value.thumbnail);
+           };
+            
+           now_playing_key.watch(now_playing_listener, function(err) {
+             if (err) {
+               console.log("Error on now_playing_listener")
+             }
+           });
 
+           //playlist information
            playlistCollection.on('remove', bubbledListener, 
                function(err, command, context) { });
            playlistCollection.on('set', bubbledListener, 
@@ -200,11 +216,11 @@
     <div class="container" id="now-playing-wrapper">
       <section id="now-playing">
         <div id="now-playing-thumbnail">
-          <img src="http://placebox.es/175/98/f0f0f0" alt="Video Thumbnail">
+          <img src="http://placebox.es/175/98/f0f0f0" id="video_thumbnail" alt="Video Thumbnail">
         </div>
         <div id="now-playing-title">
           <p><i class="icon">&#9654;</i>Now Playing</p>
-          <h2>Now Playing Video Title</h2>
+          <h2 id="video_title">Nothing</h2>
         </div>
       </section>
       <section id="vote-time">
@@ -213,15 +229,15 @@
     </div>
     <div class="container" id="playlist-wrapper">
       <section>
+        <h3><span>Up Next</span></h3>
         <ol id="playlist">
-          
         </ol>
       </section>
     </div>
     <footer class="container" id="submit-footer">
       <section>
         <input type="text" id="youtube_video" placeholder="Add Youtube URL"/>
-        <button type="submit" id="submit">Add<i class="icon">&#57347;</i></button>
+        <button type="submit" id="submit"><span>Add</span><i class="icon">&#57347;</i></button>
       </section>
     </footer>
  </body>
