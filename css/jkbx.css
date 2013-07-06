@@ -95,7 +95,7 @@ body {
 }
 #now-playing-thumbnail {
   float: left;
-  width: 21%;
+  width: 14%;
 }
 #now-playing-thumbnail img {
   -webkit-border-radius: 2px;
@@ -107,7 +107,7 @@ body {
   float: left;
   padding-left: 1em;
   padding-top: .5em;
-  max-width: 79%;
+  max-width: 86%;
 }
 #playlist-wrapper section {
   background-color: #fff;
@@ -206,9 +206,13 @@ body {
   border-color: #137d98;
   color: #137d98;
 }
-.songbox aside a.upvote:active {
+.songbox aside a.upvote:active,
+.songbox aside a.upvote.voted {
   background-color: #137d98;
   color: white;
+}
+.songbox aside a.upvote.voted {
+  border-color: #137d98;
 }
 .songbox aside a.downvote {
   line-height: .4;
@@ -218,9 +222,13 @@ body {
   border-color: #cc0000;
   color: #cc0000;
 }
-.songbox aside a.downvote:active {
+.songbox aside a.downvote:active,
+.songbox aside a.downvote.voted {
   background-color: #cc0000;
   color: white;
+}
+.songbox aside a.downvote.voted {
+  border-color: #cc0000;
 }
 /* Playlist Counter */
 #playlist {
@@ -328,10 +336,11 @@ footer#submit-footer button .icon {
   margin-left: 10px;
 }
 footer#submit-footer button:hover {
-  color: #19a2c5;
+  background-color: #19a2c5;
 }
 footer#submit-footer button:active {
-  color: #0e586a;
+  background-color: #0e586a;
+  color: #137d98;
 }
 @media handheld, only screen and (max-width: 48em) {
   .container {

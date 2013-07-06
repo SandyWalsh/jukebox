@@ -103,6 +103,7 @@
             return false;
         }
         console.log("Upvote " + idx);
+        $('#song_' + idx + '_up').addClass('voted');
         set_vote(idx, 1);
         return false;
     }
@@ -114,6 +115,7 @@
         }
 
         console.log("Downvote " + idx);
+        $('#song_' + idx + '_down').addClass('voted');
         set_vote(idx, -1);
         return false;
     }
@@ -198,6 +200,7 @@
             console.log("Submit Button Click detected.")
             add_video();
          });
+
     });
   </script>
  </head>
@@ -205,7 +208,7 @@
     <div class="container" id="now-playing-wrapper">
       <section id="now-playing">
         <div id="now-playing-thumbnail">
-          <img src="http://placebox.es/175/98/f0f0f0" alt="Video Thumbnail">
+          <img src="http://placebox.es/120/90/f0f0f0" alt="Video Thumbnail">
         </div>
         <div id="now-playing-title">
           <p><i class="icon">&#9654;</i>Now Playing</p>

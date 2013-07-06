@@ -88,7 +88,7 @@ body {
 
 #now-playing-thumbnail {
 	float: left;
-	width: 21%;
+	width: 14%;
 	img {
 		.rounded(2px);
 		max-width: 100%;
@@ -99,7 +99,7 @@ body {
 	float: left;
 	padding-left: 1em;
 	padding-top: .5em;
-	max-width: 79%;
+	max-width: 86%;
 }
 
 #playlist-wrapper {
@@ -196,9 +196,12 @@ body {
 				border-color: @teal;
 				color: @teal;
 			}
-			&:active {
+			&:active, &.voted {
 				background-color: @teal;
 				color: white;
+			}
+			&.voted {
+				border-color: @teal;
 			}
 		}
 		&.downvote {
@@ -207,9 +210,12 @@ body {
 				border-color: @red;
 				color: @red;
 			}
-			&:active {
+			&:active, &.voted {
 				background-color: @red;
 				color: white;
+			}
+			&.voted {
+				border-color: @red;
 			}
 		}
 	}
@@ -300,10 +306,11 @@ footer#submit-footer {
 			margin-left: 10px;
 		}
 		&:hover {
-			color: lighten(@teal, 10%);
+			background-color: lighten(@teal, 10%);
 		}
 		&:active {
-			color: darken(@teal, 10%);
+			background-color: darken(@teal, 10%);
+			color: @teal;
 		}
 	}
 }
