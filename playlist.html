@@ -12,6 +12,16 @@
   <script src="https://cdn.goinstant.net/client/platform.min.js"></script>
   <script type="text/javascript">
 
+    function upvote(sid) {
+        alert("Upvote" + sid);
+        return false;
+    }
+
+    function downvote(sid) {
+        alert("Downvote" + sid);
+        return false;
+    }
+
     $( document ).ready(function() {
 
      var url = 'https://goinstant.net/jukebox/jukebox/123';
@@ -24,9 +34,19 @@
      ];
 
      for (song in rawsongs) {
-        $("#playlist").append("<div class='songbox'>" +
-            "<h2>" + rawsongs[song][0] + "</h2>" +
-            "<div><a>^</a> <span>###</span> <a>v</a> <span>###</span></div>"+
+        var s = rawsongs[song];
+        s[2] = 0; // Vote? 0 = No, 1 = Up, 2 = Down
+        s[3] = "?"; // Others vote total
+        $("#playlist").append(
+            "<div class='songbox'>" +
+                "<h2>" +
+                  "<a href='" + s[1] + "' target='_blank'>" + s[0] + "</a>" +
+                "</h2>" +
+                "<div>" +
+                "<a href='#' onclick='return upvote(" + song + ");'>^</a>" +
+                "<span>" + s[3] + "</span>" + 
+                "<a href='#' onclick='return downvote(" + song + ");'>v</a>" + 
+                "</div>"+
             "</div>");
      }
 
