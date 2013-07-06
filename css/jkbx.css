@@ -17,8 +17,8 @@
 /* Icon Font */
 @font-face {
   font-family: 'entypo';
-  src: url('/css/entypo.eot');
-  src: url('/css/entypo.eot?#iefix') format('embedded-opentype'), url('/css/entypo.woff') format('woff'), url('/css/entypo.ttf') format('truetype'), url('/css/entypo.svg') format('svg');
+  src: url('../css/entypo.eot');
+  src: url('../css/entypo.eot?#iefix') format('embedded-opentype'), url('../css/entypo.woff') format('woff'), url('../css/entypo.ttf') format('truetype'), url('../css/entypo.svg') format('svg');
   font-weight: normal;
   font-style: normal;
 }
