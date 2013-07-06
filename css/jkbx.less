@@ -2,6 +2,22 @@
 
 @import "mixins";
 @fontSans: sans-serif;
+@fontIcon: 'entypo';
+@teal: saturate(#1C788F, 10%);
+@red: darken(red, 10%);
+
+
+/* Icon Font */
+@font-face {
+	font-family: 'entypo';
+	src: url('/css/entypo.eot');
+	src: url('/css/entypo.eot?#iefix') format('embedded-opentype'),
+	     url('/css/entypo.woff') format('woff'),
+	     url('/css/entypo.ttf') format('truetype'),
+	     url('/css/entypo.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
 
 * {
 	padding: 0;
@@ -9,9 +25,26 @@
 	.boxsizing();
 }
 
+a {
+	text-decoration: none;
+	color: inherit;
+	.transition();
+}
+
 body {
 	margin: 0;
 	font-family: @fontSans;
+}
+
+.icon {
+	display: inline-block;
+	margin-right: 3px;
+	font-family: @fontIcon;
+	width: 16px;
+	height: 16px;
+	font-size: 2.5em;
+	font-style: normal;
+	line-height: .65;
 }
 
 .container {
@@ -86,13 +119,66 @@ body {
 			}	
 		}
 	}
+	h2 {
+		line-height: 1.4;
+		a {
+			&:hover {
+				color: @teal;
+			}
+		}
+	}
 }
 
-.song-controller {
-	border: 1px solid #ddd;
-	.rounded(2px);
-	> span {
-		
+.songbox aside {
+	height: 36px;
+	* {
+		float: left;
+	}
+	//Count
+	span {
+		display: block;
+		height: 27px;
+		padding: 8px 15px 0;
+		font-weight: bold;
+		font-size: 1.2em;
+		color: #555;
+	}
+	//Buttons
+	a {
+		display: block;
+		position: relative;
+		padding: 7px 10px;
+		font-family: @fontIcon;
+		font-size: 3em;
+		text-indent: -4px;
+		background-color: white;
+		.rounded(50%);
+		width: 35px;
+		height: 35px;
+		color: #999;
+		border: 2px solid #eee;
+		&.upvote {
+			line-height: .35;
+			&:hover, &:active {
+				border-color: @teal;
+				color: @teal;
+			}
+			&:active {
+				background-color: @teal;
+				color: white;
+			}
+		}
+		&.downvote {
+			line-height: .4;
+			&:hover, &:active {
+				border-color: @red;
+				color: @red;
+			}
+			&:active {
+				background-color: @red;
+				color: white;
+			}
+		}
 	}
 }
 
@@ -106,13 +192,14 @@ body {
 			content: counter(li);
 		    counter-increment: li;
 		    position: absolute;
-		    left: -1.25em;
-		    top: 1.25em;
+		    left: -2.75em;
+		    top: 1.35em;
 		    color: #aaa;
+		    width: 35px;
+		    text-align: right;
 		}
 	}
 }
-
 
 section#vote-time {
 	position: relative;
@@ -129,6 +216,53 @@ section#vote-time {
 		height: 6px;
 		background-color: #1C788F;
 		.gradient(fadeout(white, 80%), fadeout(white, 100%))
+	}
+}
+
+footer#submit-footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	padding: 0;
+	background-color: #eee;
+	.box-shadow(0 -20px 20px #eee);
+	section {
+		padding: 1em;
+		background-color: #222;
+		.clearfix();
+	}
+	input[type="text"] {
+		float: left;
+		font-size: 1em;
+		border: 0;
+		padding: .6em;
+		background: #444;
+		width: 75%;
+		.transition();
+		&:focus {
+			background: #555;
+			color: white;
+			outline: none;
+		}
+	}
+	button {
+		-webkit-appearance: none;
+		float: right;
+		width: 23%;
+		border: 0;
+		padding: .5em;
+		font-size: 1em;
+		.rounded();
+		background-color: @teal;
+		font-weight: bold;
+		text-transform: uppercase;
+		color: white;
+		font-family: @fontSans;
+		.icon {
+			font-weight: normal;
+			line-height: .5;
+			margin-left: 10px;
+		}
 	}
 }
 

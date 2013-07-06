@@ -9,6 +9,10 @@
   <script type="text/javascript">
 
     var playlistCollection;
+    var playlist;
+    var this_session;
+    var this_user;
+    var user_key;
 
     function append_song(idx, key, song) {
         $("#playlist").append(
@@ -19,47 +23,74 @@
                 "</h2>" +
                 "<aside>" +
                   "<div>" +
-                    "<a id='song_" + idx + "_up' href='#' " + 
-                        "onclick='return upvote(" + idx + ");'>^</a>" +
+                    "<a class='upvote' id='song_" + idx + "_up' href='#' " + 
+                        "onclick='return upvote(" + idx + ");'>&#59231;</a>" +
                     "<span>" + "n/a" + "</span>" + 
-                    "<a id='song_" + idx + "_down' href='#' " +
-                        "onclick='return downvote(" + idx + ");'>v</a>" + 
+                    "<a class='downvote' id='song_" + idx + "_down' href='#' " +
+                        "onclick='return downvote(" + idx + ");'>&#59228;</a>" + 
                   "</div>" +
                 "</aside>" +
             "</li>");
     }
 
     function render_playlist() {
+        console.log("Getting playlist");
         playlistCollection.get(function(err, data, keys) {
             if (err) {
                 console.log("Could not get collection");
             } else {
+                 console.log("Got playlist");
+                 playlist = new Array();
                  for (idx in data) {
                     key = keys[idx];
                     song = data[idx];
                     append_song(idx, key, song);
+                    playlist.push([idx, key, song, 0, 0]); // add vote and count
                  }
             }
         });
     }
 
-    function get_song(sid) {
-        return rawsongs[sid];
+    function get_song(idx) {
+        return playlist[idx];
     }
 
-    function get_vote(sid) {
-        var song = get_song(sid);
-        return song[2];
+    function get_vote(idx) {
+        var song = get_song(idx);
+        return song[3];
     }
 
-    function upvote(sid) {
-        if (get_vote(sid) != 0)
-        alert("Upvote" + sid);
+    function set_vote(idx, vote) {
+        var song = get_song(idx);
+        song[3] = vote;
+        var vote_key = song[1].name + "/" + this_user.id + "/vote";
+        console.log("vote_key=" + vote_key);
+        var key = this_session.key(vote_key);
+        key.set(vote, function(err) {
+          if (err) {
+            alert("Could not save your vote");
+          }
+        });
+    }
+
+    function upvote(idx) {
+        if (get_vote(idx) != 0) {
+            alert("You already voted!");
+            return false;
+        }
+        alert("Upvote" + idx);
+        set_vote(idx, 1);
         return false;
     }
 
-    function downvote(sid) {
-        alert("Downvote" + sid);
+    function downvote(idx) {
+        if (get_vote(idx) != 0) {
+            alert("You already voted!");
+            return false;
+        }
+
+        alert("Downvote" + idx);
+        set_vote(idx, -1);
         return false;
     }
     
@@ -111,20 +142,28 @@
     $( document ).ready(function() {
         var url = 'https://goinstant.net/jukebox/jukebox/123';
         goinstant.connect(url, function(err, platform, session) {
-          if (err) {
-            console.log('error connecting');
-            return;
-          }
+           if (err) {
+             console.log('error connecting');
+             return;
+           }
+           this_session = session;
+           playlistCollection = session.collection('/playlist');
 
-          playlistCollection = session.collection('/playlist');
+           session.user(function(err, user, key, context) {
+               if (!err) {
+                   console.log('Local user id ' + user.id);
+                   this_user = user;
+                   user_key = key;
+               }
+           });
 
-          render_playlist();    
-        });   
+           render_playlist();
+         });
 
-        $("#submit").click(function() {
-          console.log("Submit Button Click detected.")
-          add_video();
-        });     
+         $("#submit").click(function() {
+            console.log("Submit Button Click detected.")
+            add_video();
+         });
     });
   </script>
  </head>
@@ -133,7 +172,7 @@
       <section id="now-playing">
         <img src="http://placebox.es/175/98/f0f0f0" alt="Video Thumbnail">
         <div>
-          <p>Now Playing</p>
+          <p><i class="icon">&#9654;</i>Now Playing</p>
           <h2>Now Playing Video Title</h2>
         </div>
       </section>
@@ -144,22 +183,15 @@
     <div class="container" id="playlist-wrapper">
       <section>
         <ol id="playlist">
-          <!-- <li class='songbox'>
-            <h2><a href="#">Song Name</a></h2>
-            <aside class="song-controller">
-              <div>
-                <a href='#'>^</a>
-                <span>123</span>
-                <a href='#'>v</a>
-              </div>
-            </aside>
-          </li> -->
+          
         </ol>
       </section>
+    </div>
+    <footer class="container" id="submit-footer">
       <section>
         <input type="text" id="youtube_video" placeholder="Add Youtube URL"/>
-        <button type="submit" id="submit">+ Add</button>
+        <button type="submit" id="submit">Add<i class="icon">&#57347;</i></button>
       </section>
-    </div>
+    </footer>
  </body>
 </html>
