@@ -1,0 +1,58 @@
+<html>
+ <head>
+  <title>Jkbx Playlist</title>
+
+  <style type="text/css">
+    songbox
+    {
+        border: solid 1px;
+    }
+  </style>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="https://cdn.goinstant.net/client/platform.min.js"></script>
+  <script type="text/javascript">
+
+    $( document ).ready(function() {
+
+     var url = 'https://goinstant.net/jukebox/jukebox/123';
+
+     var rawsongs = [
+     ["Spoon - I Turn My Camera On", 
+        "https://www.youtube.com/watch?v=ro95Ns58qSE"],
+     ["Los Mono - Promesas", 
+        "https://www.youtube.com/watch?v=OBSkLfVp2fQ"]
+     ];
+
+     for (song in rawsongs) {
+        $("#playlist").append("<div class='songbox'>" +
+            "<h2>" + rawsongs[song][0] + "</h2>" +
+            "<div><a>^</a> <span>###</span> <a>v</a> <span>###</span></div>"+
+            "</div>");
+     }
+
+     goinstant.connect(url, function(err, platform, session) {
+       if (err) {
+         console.log('error connecting');
+         return;
+       }
+
+       var nameKey = session.key('/name');
+
+       // handle sets from remote users
+       nameKey.on('set', function(value, context) {
+       });
+
+       // set the value when we load
+       nameKey.get(function(err, value, context) {
+       });
+
+     });
+
+    });
+  </script>
+ </head>
+ <body>
+    <div id='playlist'>
+    </div>
+ </body>
+</html>
