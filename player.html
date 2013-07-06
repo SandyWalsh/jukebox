@@ -34,22 +34,51 @@
             });  
         });
         
+        function do_voting(data, keys) {
+            var got = keys.length - 1;
+            for (idx in keys) {
+                if (idx == 0) {
+                    continue;
+                }
+                var vote_key_name = keys[idx].name + "/votes";
+                var vote_key = this_session.key(vote_key_name);
+                vote_key.get(function(err, value, context) {
+                    if (value == null || value.length == 0) {
+                        console.log("No vote keys", context.key);
+                        return;
+                    }
+                    console.log("vote keys", context.key, Object.keys(value));
+                    var total = 0;
+                    for (vote_idx in value) {
+                       var vote = value[vote_idx];
+                       console.log("vote: ", vote);
+                       total = total + vote;
+                    }
+                    console.log("total: ", total);
+                });
+            }
+        }
+
         function play_firstsong() {
             playlistCollection.get(function(err, data, keys) {
                 if (err) {
                     console.log("Could not get collection");
                 } else {
                     if(playing == false && data.length > 0) {
+                        do_voting(data, keys);
+
                         createPlayer(data[0].vid);
                         console.log("Key Name " + keys[0].name);
 
                         //Globally broadcast this is playing.
                         var key = this_session.key('/now_playing');
-                        var value = {title: data[0].title, thumbnail: data[0].thumbnail};
+                        var value = {title: data[0].title, 
+                                     thumbnail: data[0].thumbnail};
                         key.set(value);
 
                         keys[0].remove();
                         playing = true;
+
                     }
                 }
             });
