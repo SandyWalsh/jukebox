@@ -9,6 +9,10 @@
   <script type="text/javascript">
 
     var playlistCollection;
+    var playlist;
+    var this_session;
+    var this_user;
+    var user_key;
 
     function append_song(idx, key, song) {
         $("#playlist").append(
@@ -30,38 +34,63 @@
     }
 
     function render_playlist() {
-        alert("Getting playlist");
+        console.log("Getting playlist");
         playlistCollection.get(function(err, data, keys) {
             if (err) {
                 console.log("Could not get collection");
             } else {
-                 alert("Got playlist");
+                 console.log("Got playlist");
+                 playlist = new Array();
                  for (idx in data) {
-                    key = key[idx];
+                    key = keys[idx];
                     song = data[idx];
                     append_song(idx, key, song);
+                    playlist.push([idx, key, song, 0, 0]); // add vote and count
                  }
             }
         });
     }
 
-    function get_song(sid) {
-        return rawsongs[sid];
+    function get_song(idx) {
+        return playlist[idx];
     }
 
-    function get_vote(sid) {
-        var song = get_song(sid);
-        return song[2];
+    function get_vote(idx) {
+        var song = get_song(idx);
+        return song[3];
     }
 
-    function upvote(sid) {
-        if (get_vote(sid) != 0)
-        alert("Upvote" + sid);
+    function set_vote(idx, vote) {
+        var song = get_song(idx);
+        song[3] = vote;
+        var vote_key = song[1].name + "/" + this_user.id + "/vote";
+        console.log("vote_key=" + vote_key);
+        var key = this_session.key(vote_key);
+        key.set(vote, function(err) {
+          if (err) {
+            alert("Could not save your vote");
+          }
+        });
+    }
+
+    function upvote(idx) {
+        if (get_vote(idx) != 0) {
+            alert("You already voted!");
+            return false;
+        }
+        alert("Upvote" + idx);
+        set_vote(idx, 1);
         return false;
     }
 
-    function downvote(sid) {
-        alert("Downvote" + sid);
+    function downvote(idx) {
+        if (get_vote(idx) != 0) {
+            alert("You already voted!");
+            return false;
+        }
+
+        alert("Downvote" + idx);
+        set_vote(idx, -1);
         return false;
     }
     
@@ -79,24 +108,32 @@
            console.log(key.name);
         });
     }
-     
+
     $( document ).ready(function() {
         var url = 'https://goinstant.net/jukebox/jukebox/123';
         goinstant.connect(url, function(err, platform, session) {
-          if (err) {
-            console.log('error connecting');
-            return;
-          }
+           if (err) {
+             console.log('error connecting');
+             return;
+           }
+           this_session = session;
+           playlistCollection = session.collection('/playlist');
 
-          playlistCollection = session.collection('/playlist');
+           session.user(function(err, user, key, context) {
+               if (!err) {
+                   console.log('Local user id ' + user.id);
+                   this_user = user;
+                   user_key = key;
+               }
+           });
 
-          render_playlist();    
-        });   
+           render_playlist();
+         });
 
-        $("#submit").click(function() {
-          console.log("Submit Button Click detected.")
-          add_video();
-        });     
+         $("#submit").click(function() {
+            console.log("Submit Button Click detected.")
+            add_video();
+         });
     });
   </script>
  </head>
