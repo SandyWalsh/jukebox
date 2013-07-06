@@ -257,11 +257,11 @@ section#vote-time {
 }
 section#vote-time > div {
   position: absolute;
-  width: 75%;
+  width: 100%;
   left: 0;
   bottom: 0;
   height: 6px;
-  background-color: #1C788F;
+  background-color: #137d98;
   background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.19999999999999996) 0%, rgba(255, 255, 255, 0) 100%);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0.19999999999999996)), color-stop(100%, rgba(255, 255, 255, 0)));
   background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.19999999999999996) 0%, rgba(255, 255, 255, 0), 100%);
