@@ -10,45 +10,40 @@
 
     var playlistCollection;
 
-    var rawsongs = [
-     ["Spoon - I Turn My Camera On", 
-        "https://www.youtube.com/watch?v=ro95Ns58qSE"],
-     ["Los Mono - Promesas", 
-        "https://www.youtube.com/watch?v=OBSkLfVp2fQ"]
-    ];
-
-    function append_song(sid, song) {
+    function append_song(idx, key, song) {
         $("#playlist").append(
-            "<li id='song_" + song + "' class='songbox'>" +
+            "<li id='song_" + idx + "' class='songbox'>" +
                 "<h2>" +
-                  "<a href='" + s[1] + "' target='_blank'>" + 
-                    s[0] + "</a>" +
+                  "<a href='" + song.url + "' target='_blank'>" + 
+                    song.title + "</a>" +
                 "</h2>" +
                 "<aside>" +
                   "<div>" +
-                    "<a class='upvote' id='song_" + song + "_up' href='#' " + 
-                        "onclick='return upvote(" + song + ");'>&#59231;</a>" +
-                    "<span>" + s[3] + "</span>" + 
-                    "<a class='downvote' id='song_" + song + "_down' href='#' " +
-                        "onclick='return downvote(" + song + ");'>&#59228;</a>" + 
+                    "<a id='song_" + idx + "_up' href='#' " + 
+                        "onclick='return upvote(" + idx + ");'>^</a>" +
+                    "<span>" + "n/a" + "</span>" + 
+                    "<a id='song_" + idx + "_down' href='#' " +
+                        "onclick='return downvote(" + idx + ");'>v</a>" + 
                   "</div>" +
                 "</aside>" +
             "</li>");
     }
 
     function render_playlist() {
+        alert("Getting playlist");
         playlistCollection.get(function(err, data, keys) {
-         if (err) {
-            s[2] = 0; // Vote? 0 = No, 1 = Up, 2 = Down
-            s[3] = "?"; // Others vote total
-         } else {
-             for (song in rawsongs) {
-               // append_song(song
-             }
-         }
-       });
+            if (err) {
+                console.log("Could not get collection");
+            } else {
+                 alert("Got playlist");
+                 for (idx in data) {
+                    key = key[idx];
+                    song = data[idx];
+                    append_song(idx, key, song);
+                 }
+            }
+        });
     }
-
 
     function get_song(sid) {
         return rawsongs[sid];
@@ -69,21 +64,39 @@
         alert("Downvote" + sid);
         return false;
     }
+    
+    function add_video() {
+        // Add a new value - a unique key will be generated automatically
+        playlistCollection.add({title: 'Random Title', url: $("#youtube_video").val()}, function(err, key) {
+           // Check for errors
+           if (err) {
+              //oh no!
+              console.log(err);
+              return;
+           }
 
+           // key contains the newly created Key object
+           console.log(key.name);
+        });
+    }
+     
     $( document ).ready(function() {
+        var url = 'https://goinstant.net/jukebox/jukebox/123';
+        goinstant.connect(url, function(err, platform, session) {
+          if (err) {
+            console.log('error connecting');
+            return;
+          }
 
-     var url = 'https://goinstant.net/jukebox/jukebox/123';
-     goinstant.connect(url, function(err, platform, session) {
-       if (err) {
-         console.log('error connecting');
-         return;
-       }
+          playlistCollection = session.collection('/playlist');
 
-       playlistCollection = session.collection('/playlist');
+          render_playlist();    
+        });   
 
-       render_playlist();
-     });
-
+        $("#submit").click(function() {
+          console.log("Submit Button Click detected.")
+          add_video();
+        });     
     });
   </script>
  </head>
@@ -103,12 +116,21 @@
     <div class="container" id="playlist-wrapper">
       <section>
         <ol id="playlist">
-          
+          <!-- <li class='songbox'>
+            <h2><a href="#">Song Name</a></h2>
+            <aside class="song-controller">
+              <div>
+                <a href='#'>^</a>
+                <span>123</span>
+                <a href='#'>v</a>
+              </div>
+            </aside>
+          </li> -->
         </ol>
       </section>
       <section>
-        <input type="text" placeholder="Add Youtube URL"/>
-        <button type="submit">+ Add</button>
+        <input type="text" id="youtube_video" placeholder="Add Youtube URL"/>
+        <button type="submit" id="submit">+ Add</button>
       </section>
     </div>
  </body>
