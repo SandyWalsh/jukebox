@@ -45,6 +45,12 @@
                 console.log("Got vote update for", idx, "=", value);
                 if (value != null) {
                     playlist[idx][3] = value;
+                    if (value == +1) {
+                      $('#song_' + idx + '_up').addClass('voted');
+                    }
+                    else if (value == -1) {
+                      $('#song_' + idx + '_down').addClass('voted');
+                    }
                 }
             }
         }
