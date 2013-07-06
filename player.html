@@ -24,9 +24,9 @@
         });
          
          function updateVideo() {
-                videoKey.get(function(err, value, context) {
-                   createPlayer(value);
-               });   
+            videoKey.get(function(err, value, context) {
+               createPlayer(value);
+           });   
          }
        
         // This function is called when an error is thrown by the player
@@ -37,7 +37,7 @@
         // This function is called when the player changes state
         function onPlayerStateChange(newState) {
             console.log("State Changed" + newState);
-            
+
             if(newState == "0") {
                 console.log("Song stopped, request a new one.");
                 updateVideo();
@@ -70,7 +70,19 @@
             
             swfobject.embedSWF("http://www.youtube.com/v/" + videoId + "?enablejsapi=1&playerapiid=ytplayer&version=3&autoplay=1",
                                "ytapiplayer", "100%", "100%", "8", null, null, params, atts);
-        }        
+        } 
+        
+            //Parse out the video id.
+    function youtube_parser(url){
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match&&match[7].length==11) {
+            return match[7];
+        } else {
+            console.log("Url incorrect");
+        }
+    }
+
       </script>
     
 </head>

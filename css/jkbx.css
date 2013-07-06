@@ -14,12 +14,28 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* Icon Font */
+@font-face {
+  font-family: 'entypo';
+  src: url('/css/entypo.eot');
+  src: url('/css/entypo.eot?#iefix') format('embedded-opentype'), url('/css/entypo.woff') format('woff'), url('/css/entypo.ttf') format('truetype'), url('/css/entypo.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
 * {
   padding: 0;
   margin: 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 body {
   margin: 0;
@@ -116,11 +132,65 @@ body {
 #playlist > li > aside div {
   float: right;
 }
-.song-controller {
-  border: 1px solid #ddd;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+#playlist h2 {
+  line-height: 1.4;
+}
+#playlist h2 a:hover {
+  color: #137d98;
+}
+.songbox aside {
+  height: 36px;
+}
+.songbox aside * {
+  float: left;
+}
+.songbox aside span {
+  display: block;
+  height: 27px;
+  padding: 8px 15px 0;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #555;
+}
+.songbox aside a {
+  display: block;
+  position: relative;
+  padding: 7px 10px;
+  font-family: 'entypo';
+  font-size: 3em;
+  text-indent: -4px;
+  background-color: white;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  color: #999;
+  border: 2px solid #eee;
+}
+.songbox aside a.upvote {
+  line-height: .35;
+}
+.songbox aside a.upvote:hover,
+.songbox aside a.upvote:active {
+  border-color: #137d98;
+  color: #137d98;
+}
+.songbox aside a.upvote:active {
+  background-color: #137d98;
+  color: white;
+}
+.songbox aside a.downvote {
+  line-height: .4;
+}
+.songbox aside a.downvote:hover,
+.songbox aside a.downvote:active {
+  border-color: #cc0000;
+  color: #cc0000;
+}
+.songbox aside a.downvote:active {
+  background-color: #cc0000;
+  color: white;
 }
 /* Playlist Counter */
 #playlist {
@@ -134,7 +204,7 @@ body {
   counter-increment: li;
   position: absolute;
   left: -1.25em;
-  top: 1.25em;
+  top: 1.35em;
   color: #aaa;
 }
 section#vote-time {

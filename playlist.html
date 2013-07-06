@@ -24,10 +24,10 @@
                 "<aside>" +
                   "<div>" +
                     "<a id='song_" + idx + "_up' href='#' " + 
-                        "onclick='return upvote(" + idx + ");'>^</a>" +
+                        "onclick='return upvote(" + idx + ");'>&#59231;</a>" +
                     "<span>" + "n/a" + "</span>" + 
                     "<a id='song_" + idx + "_down' href='#' " +
-                        "onclick='return downvote(" + idx + ");'>v</a>" + 
+                        "onclick='return downvote(" + idx + ");'>&#59228;</a>" + 
                   "</div>" +
                 "</aside>" +
             "</li>");
@@ -93,6 +93,21 @@
         set_vote(idx, -1);
         return false;
     }
+    
+    function add_video() {
+        // Add a new value - a unique key will be generated automatically
+        playlistCollection.add({title: 'Random Title', url: $("#youtube_video").val()}, function(err, key) {
+           // Check for errors
+           if (err) {
+              //oh no!
+              console.log(err);
+              return;
+           }
+
+           // key contains the newly created Key object
+           console.log(key.name);
+        });
+    }
 
     $( document ).ready(function() {
         var url = 'https://goinstant.net/jukebox/jukebox/123';
@@ -114,7 +129,12 @@
 
            render_playlist();
          });
-   });
+
+         $("#submit").click(function() {
+            console.log("Submit Button Click detected.")
+            add_video();
+         });
+    });
   </script>
  </head>
  <body>
@@ -146,8 +166,8 @@
         </ol>
       </section>
       <section>
-        <input type="text" placeholder="Add Youtube URL"/>
-        <button type="submit">+ Add</button>
+        <input type="text" id="youtube_video" placeholder="Add Youtube URL"/>
+        <button type="submit" id="submit">+ Add</button>
       </section>
     </div>
  </body>
