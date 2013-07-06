@@ -30,14 +30,12 @@
     }
 
     function render_playlist() {
-        alert("Getting playlist");
         playlistCollection.get(function(err, data, keys) {
             if (err) {
                 console.log("Could not get collection");
             } else {
-                 alert("Got playlist");
                  for (idx in data) {
-                    key = key[idx];
+                    key = keys[idx];
                     song = data[idx];
                     append_song(idx, key, song);
                  }
@@ -66,18 +64,48 @@
     }
     
     function add_video() {
-        // Add a new value - a unique key will be generated automatically
-        playlistCollection.add({title: 'Random Title', url: $("#youtube_video").val()}, function(err, key) {
-           // Check for errors
-           if (err) {
-              //oh no!
-              console.log(err);
-              return;
-           }
+        var video_url = $("#youtube_video").val();
+        var video_id = youtube_parser(video_url);
+        var video_title;
+                
+        // Empty the string
+        $("#youtube_video").val('');
+        
+        $.ajax({
+            url: "http://gdata.youtube.com/feeds/api/videos/" + video_id + "?v=2&alt=json",
+            dataType: "jsonp",
+            success: function (data) {
+                console.log(data.entry.title.$t);
+                video_title = data.entry.title.$t;
+                
+                playlistCollection.add({title: video_title, url: video_url, vid: video_id, thumbnail: 'http://i1.ytimg.com/vi/' + video_id + '/default.jpg'}, function(err, key) {
+                    // Check for errors
+                    if (err) {
+                       //oh no!
+                       console.log(err);
+                       return;
+                    }
 
-           // key contains the newly created Key object
-           console.log(key.name);
+                    // key contains the newly created Key object
+                    console.log(key.name);
+                 });
+        
+            },
+            error: function (data) {
+                console.log("Error fetching video results");
+            }                
         });
+    }
+    
+    //Parse out the video id.
+    function youtube_parser(url){
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match&&match[7].length==11) {
+            return match[7];
+        } else {
+            console.log("Url incorrect");
+        }
     }
      
     $( document ).ready(function() {
