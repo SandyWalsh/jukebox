@@ -24,13 +24,15 @@
                   "<a href='" + s[1] + "' target='_blank'>" + 
                     s[0] + "</a>" +
                 "</h2>" +
-                "<div>" +
-                "<a id='song_" + song + "_up' href='#' " + 
-                    "onclick='return upvote(" + song + ");'>^</a>" +
-                "<span>" + s[3] + "</span>" + 
-                "<a id='song_" + song + "_down' href='#' " +
-                    "onclick='return downvote(" + song + ");'>v</a>" + 
-                "</div>"+
+                "<aside>" +
+                  "<div>" +
+                    "<a id='song_" + song + "_up' href='#' " + 
+                        "onclick='return upvote(" + song + ");'>^</a>" +
+                    "<span>" + s[3] + "</span>" + 
+                    "<a id='song_" + song + "_down' href='#' " +
+                        "onclick='return downvote(" + song + ");'>v</a>" + 
+                  "</div>" +
+                "</aside>" +
             "</li>");
     }
 
