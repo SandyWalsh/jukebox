@@ -81,23 +81,22 @@
     }
      
     $( document ).ready(function() {
-     var url = 'https://goinstant.net/jukebox/jukebox/123';
-     goinstant.connect(url, function(err, platform, session) {
-       if (err) {
-         console.log('error connecting');
-         return;
-       }
+        var url = 'https://goinstant.net/jukebox/jukebox/123';
+        goinstant.connect(url, function(err, platform, session) {
+          if (err) {
+            console.log('error connecting');
+            return;
+          }
 
-       playlistCollection = session.collection('/playlist');
+          playlistCollection = session.collection('/playlist');
 
-       render_playlist();    
-     });   
-    
-       $("#submit").click(function() {
-         console.log("Submit Button Click detected.")
-         add_video();
-       });
-     
+          render_playlist();    
+        });   
+
+        $("#submit").click(function() {
+          console.log("Submit Button Click detected.")
+          add_video();
+        });     
     });
   </script>
  </head>
