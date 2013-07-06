@@ -134,19 +134,14 @@
             success: function (data) {
                 console.log(data.entry.title.$t);
                 video_title = data.entry.title.$t;
-                
+
                 playlistCollection.add({title: video_title, url: video_url, vid: video_id, thumbnail: 'http://i1.ytimg.com/vi/' + video_id + '/default.jpg'}, function(err, key) {
-                    // Check for errors
                     if (err) {
-                       //oh no!
                        console.log(err);
                        return;
                     }
-
-                    // key contains the newly created Key object
                     console.log(key.name);
                  });
-        
             },
             error: function (data) {
                 console.log("Error fetching video results");
@@ -155,12 +150,11 @@
     }
 
     function bubbledListener(value, context) {
-        // Something was removed from the collection.
+        // Something was added/removed from/to the collection.
         console.log("Refreshing playlist");
         render_playlist();
     }
 
-    
     //Parse out the video id.
     function youtube_parser(url){
         var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
@@ -189,10 +183,27 @@
                    user_key = key;
                }
            });
+           
+           //Handle anything for now playing
+           var now_playing_key = session.key('/now_playing');
+            
+           function now_playing_listener(value, context) {
+               console.log("Now playing has changed. Context: " + context);
+               $('#video_title').html(value.title);
+               $("#video_thumbnail").attr("src",value.thumbnail);
+           };
+            
+           now_playing_key.watch(now_playing_listener, function(err) {
+             if (err) {
+               console.log("Error on now_playing_listener")
+             }
+           });
 
+           //playlist information
            playlistCollection.on('remove', bubbledListener, 
-               function(err, command, context) {
-               });
+               function(err, command, context) { });
+           playlistCollection.on('set', bubbledListener, 
+               function(err, command, context) { });
            render_playlist();
          });
 
@@ -208,11 +219,11 @@
     <div class="container" id="now-playing-wrapper">
       <section id="now-playing">
         <div id="now-playing-thumbnail">
-          <img src="http://placebox.es/120/90/f0f0f0" alt="Video Thumbnail">
+          <img src="http://placebox.es/175/98/f0f0f0" id="video_thumbnail" alt="Video Thumbnail">
         </div>
         <div id="now-playing-title">
           <p><i class="icon">&#9654;</i>Now Playing</p>
-          <h2>Now Playing Video Title</h2>
+          <h2 id="video_title">Nothing</h2>
         </div>
       </section>
       <section id="vote-time">
