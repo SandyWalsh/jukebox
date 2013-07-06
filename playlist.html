@@ -132,19 +132,14 @@
             success: function (data) {
                 console.log(data.entry.title.$t);
                 video_title = data.entry.title.$t;
-                
+
                 playlistCollection.add({title: video_title, url: video_url, vid: video_id, thumbnail: 'http://i1.ytimg.com/vi/' + video_id + '/default.jpg'}, function(err, key) {
-                    // Check for errors
                     if (err) {
-                       //oh no!
                        console.log(err);
                        return;
                     }
-
-                    // key contains the newly created Key object
                     console.log(key.name);
                  });
-        
             },
             error: function (data) {
                 console.log("Error fetching video results");
@@ -153,12 +148,11 @@
     }
 
     function bubbledListener(value, context) {
-        // Something was removed from the collection.
+        // Something was added/removed from/to the collection.
         console.log("Refreshing playlist");
         render_playlist();
     }
 
-    
     //Parse out the video id.
     function youtube_parser(url){
         var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
@@ -189,8 +183,9 @@
            });
 
            playlistCollection.on('remove', bubbledListener, 
-               function(err, command, context) {
-               });
+               function(err, command, context) { });
+           playlistCollection.on('set', bubbledListener, 
+               function(err, command, context) { });
            render_playlist();
          });
 
