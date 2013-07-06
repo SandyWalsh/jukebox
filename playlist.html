@@ -27,10 +27,10 @@
                 "</h2>" +
                 "<aside>" +
                   "<div>" +
-                    "<a id='song_" + idx + "_up' href='#' " + 
+                    "<a class='upvote' id='song_" + idx + "_up' href='#' " + 
                         "onclick='return upvote(" + idx + ");'>&#59231;</a>" +
                     "<span>" + "n/a" + "</span>" + 
-                    "<a id='song_" + idx + "_down' href='#' " +
+                    "<a class='downvote' id='song_" + idx + "_down' href='#' " +
                         "onclick='return downvote(" + idx + ");'>&#59228;</a>" + 
                   "</div>" +
                 "</aside>" +
@@ -113,17 +113,36 @@
     }
 
     function add_video() {
-        // Add a new value - a unique key will be generated automatically
-        playlistCollection.add({title: 'Random Title', url: $("#youtube_video").val()}, function(err, key) {
-           // Check for errors
-           if (err) {
-              //oh no!
-              console.log(err);
-              return;
-           }
+        var video_url = $("#youtube_video").val();
+        var video_id = youtube_parser(video_url);
+        var video_title;
+                
+        // Empty the string
+        $("#youtube_video").val('');
+        
+        $.ajax({
+            url: "http://gdata.youtube.com/feeds/api/videos/" + video_id + "?v=2&alt=json",
+            dataType: "jsonp",
+            success: function (data) {
+                console.log(data.entry.title.$t);
+                video_title = data.entry.title.$t;
+                
+                playlistCollection.add({title: video_title, url: video_url, vid: video_id, thumbnail: 'http://i1.ytimg.com/vi/' + video_id + '/default.jpg'}, function(err, key) {
+                    // Check for errors
+                    if (err) {
+                       //oh no!
+                       console.log(err);
+                       return;
+                    }
 
-           // key contains the newly created Key object
-           console.log(key.name);
+                    // key contains the newly created Key object
+                    console.log(key.name);
+                 });
+        
+            },
+            error: function (data) {
+                console.log("Error fetching video results");
+            }                
         });
     }
 
@@ -133,6 +152,18 @@
         render_playlist();
     }
 
+    
+    //Parse out the video id.
+    function youtube_parser(url){
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match&&match[7].length==11) {
+            return match[7];
+        } else {
+            console.log("Url incorrect");
+        }
+    }
+     
     $( document ).ready(function() {
         var url = 'https://goinstant.net/jukebox/jukebox/123';
         goinstant.connect(url, function(err, platform, session) {
@@ -167,9 +198,11 @@
  <body>
     <div class="container" id="now-playing-wrapper">
       <section id="now-playing">
-        <img src="http://placebox.es/175/98/f0f0f0" alt="Video Thumbnail">
-        <div>
-          <p>Now Playing</p>
+        <div id="now-playing-thumbnail">
+          <img src="http://placebox.es/175/98/f0f0f0" alt="Video Thumbnail">
+        </div>
+        <div id="now-playing-title">
+          <p><i class="icon">&#9654;</i>Now Playing</p>
           <h2>Now Playing Video Title</h2>
         </div>
       </section>
@@ -180,22 +213,15 @@
     <div class="container" id="playlist-wrapper">
       <section>
         <ol id="playlist">
-          <!-- <li class='songbox'>
-            <h2><a href="#">Song Name</a></h2>
-            <aside class="song-controller">
-              <div>
-                <a href='#'>^</a>
-                <span>123</span>
-                <a href='#'>v</a>
-              </div>
-            </aside>
-          </li> -->
+          
         </ol>
       </section>
+    </div>
+    <footer class="container" id="submit-footer">
       <section>
         <input type="text" id="youtube_video" placeholder="Add Youtube URL"/>
-        <button type="submit" id="submit">+ Add</button>
+        <button type="submit" id="submit">Add<i class="icon">&#57347;</i></button>
       </section>
-    </div>
+    </footer>
  </body>
 </html>
